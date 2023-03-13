@@ -11,23 +11,22 @@ spec:
     metadata:
       labels:
         app: hello-python
-    spec:
-      containers:
-      - name: hello-python
-        image: hello-python
-        imagePullPolicy: Always
-        env:
-        - name: REGISTRY_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: docker-secrets
-              key: auths
-        resources:
-          limits:
-            cpu: 1
-            memory: 256Mi
-          requests:
-            cpu: 500m
-            memory: 128Mi
-        ports:
-        - containerPort: 5000
+  containers:
+  - name: hello-python-container
+    image: hello-python:v1
+    imagePullPolicy: Always
+    env:
+    - name: REGISTRY_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: docker-registry-credentials
+          key: auths
+    resources:
+      limits:
+        cpu: 1
+        memory: 256Mi
+      requests:
+        cpu: 500m
+        memory: 128Mi
+    ports:
+    - containerPort: 5000
