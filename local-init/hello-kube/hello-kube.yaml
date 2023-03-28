@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: hello-kube
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: hello-python
@@ -11,22 +11,24 @@ spec:
     metadata:
       labels:
         app: hello-python
-  containers:
-  - name: hello-python-container
-    image: hello-python:v1
-    imagePullPolicy: Always
-    env:
-    - name: REGISTRY_USERNAME
-      valueFrom:
-        secretKeyRef:
-          name: docker-registry-credentials
-          key: auths
-    resources:
-      limits:
-        cpu: 1
-        memory: 256Mi
-      requests:
-        cpu: 500m
-        memory: 128Mi
-    ports:
-    - containerPort: 5000
+    spec:
+      containers:
+      - name: hello-python-container
+        image: hello-python:v1
+        imagePullPolicy: Always
+        env:
+        - name: REGISTRY_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: docker-registry-credentials
+              key: auths
+        resources:
+          limits:
+            cpu: 1
+            memory: 512Mi
+          requests:
+            cpu: 500m
+            memory: 768Mi
+        ports:
+        - containerPort: 5000
+          name: http
